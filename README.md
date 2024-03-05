@@ -1,11 +1,17 @@
 ### WELCOME!
 
 #### About me: 
-I am a data scientist with 3 years of experience in Data Science and more than 7 years of experience in R&D. My passion lies in using data and analytical methods to solve complex business problems and drive meaningful insights.
+I’m a dedicated Data Analyst currently serving at the Data Analytics Center of Almaty City Development Center JSC. My professional journey is marked by an unwavering commitment to harnessing the power of data to unlock insights and drive strategic decisions. With a strong educational background in optical and quantum technologies, computational biology, and bioinformatics, complemented by ongoing postgraduate studies in informatics and computer engineering, I bring a multifaceted perspective to the field of data science.
+
+My experience spans research and practical applications in various settings, from quantum communications to healthcare analytics. At the core of my expertise lies a deep-seated proficiency in mathematical modeling, statistical analysis, and a suite of programming and data visualization tools. I transform city data into actionable insights using tools like Python, QGIS, Streamlit, Power BI, and more.
+
+As a professional, I’m known for my ability to translate intricate data into actionable strategies, whether it's through crime pattern analysis, socio-economic studies, or enhancing public safety measures. My work not only contributes to the operational excellence of the organizations I serve but also aims to improve the quality of life within urban environments.
+
+In pursuit of knowledge and innovation, I actively engage with the latest trends in smart city digitalization, aiming to be at the forefront of this transformative era. My vision is to continue evolving as a data analyst, mentor, and thought leader, contributing to the advancement of analytics and machine learning in the service of society.
 
 #### My technical skills include:
 - Proficient in Python and SQL;
-- Experience with a wide range of data science libraries, including Pandas, Matplotlib, scikit-learn, TensorFlow, Keras, PyTorch, NLTK, TextBlob, Gensim, and polyglot;
+- Experience with a wide range of data science libraries, including Pandas, Matplotlib, Streamlit, Geopandas, Scikit-learn, OpenAI, Mapbox, and more;
 - Strong understanding of mathematical statistics methods, A/B testing, natural language processing, and machine learning;
 - Familiarity with data visualization and business intelligence tools such as Power BI, Tableau, Amplitude, and Excel, as well as Big Data technologies like Hadoop and Spark.
 
