@@ -20,16 +20,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Generate GitHub Contributions Snake Animations (Seasons)
+      - name: Generate GitHub Contributions Snake Animations (Dark & Light)
         uses: Platane/snk@v3
         with:
           github_user_name: alinachrks  # Твой GitHub username
           outputs: |
-            dist/github-snake-winter.svg?palette=github-dark&color_snake=#ffffff&color_dots=#cce7ff,#a3d5ff,#7bbcff,#4b91f1,#0044cc
-            dist/github-snake-spring.svg?palette=github-light&color_snake=#00ff99&color_dots=#ccffcc,#99ff99,#66ff66,#33cc33,#009933
-            dist/github-snake-summer.svg?palette=github-light&color_snake=#ffcc00&color_dots=#ffeb99,#ffd633,#ffbb00,#ff9900,#ff7700
-            dist/github-snake-autumn.svg?palette=github-dark&color_snake=#ff6600&color_dots=#ffcc99,#ff9966,#ff6633,#cc4400,#993300
-            dist/ocean.gif?color_snake=#0000ff&color_dots=#ff00ff,#ffcc00,#33ff33,#0066ff,#ffffff
+            dist/github-snake-dark.svg?palette=github-dark&color_snake=#000000&color_dots=#111111,#222222,#333333,#444444,#555555
+            dist/github-snake-light.svg?palette=github-light&color_snake=#ffffff&color_dots=#aaaaaa,#bbbbbb,#cccccc,#dddddd,#eeeeee
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
