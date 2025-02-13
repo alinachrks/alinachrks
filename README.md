@@ -28,6 +28,29 @@ _Over the years, I have gathered a wealth of resources that have been instrument
 
 
 
-### 🐍 GitHub Activity   
+### 🐍 Seasonal GitHub Activity Snake  
 
-![snake gif](https://github.com/alinachrks/alinachrks/blob/output/github-snake-dark.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/alinachrks/alinachrks/blob/output/github-snake-winter.svg">
+  <img alt="Winter Snake Animation" src="https://github.com/alinachrks/alinachrks/blob/output/github-snake-winter.svg">
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/alinachrks/alinachrks/blob/output/github-snake-spring.svg">
+  <img alt="Spring Snake Animation" src="https://github.com/alinachrks/alinachrks/blob/output/github-snake-spring.svg">
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/alinachrks/alinachrks/blob/output/github-snake-summer.svg">
+  <img alt="Summer Snake Animation" src="https://github.com/alinachrks/alinachrks/blob/output/github-snake-summer.svg">
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/alinachrks/alinachrks/blob/output/github-snake-autumn.svg">
+  <img alt="Autumn Snake Animation" src="https://github.com/alinachrks/alinachrks/blob/output/github-snake-autumn.svg">
+</picture>
+
+### 🌊 Animated Ocean Snake  
+
+![ocean snake](https://github.com/alinachrks/alinachrks/blob/output/ocean.gif)
+
