@@ -1,17 +1,15 @@
 name: GitHub Snake Game
 
 on:
-  # Запуск ежедневно в полночь (UTC)
   schedule:
     - cron: "0 0 * * *"
-
-  # Разрешение ручного запуска workflow
   workflow_dispatch:
-
-  # Запуск при коммитах в main-ветку
   push:
     branches:
       - main
+
+permissions:
+  contents: write 
 
 jobs:
   generate:
@@ -19,26 +17,20 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      # Шаг 1: Клонирование репозитория
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Шаг 2: Генерация змейки активности
       - name: Generate GitHub Contributions Snake Animations
         uses: Platane/snk@v3
         with:
-          github_user_name: alinachrks 
-
-          # Определение выходных файлов и их параметров
+          github_user_name: alinachrks
           outputs: |
             dist/github-snake.svg
             dist/github-snake-dark.svg?palette=github-dark
             dist/ocean.gif?color_snake=orange&color_dots=#bfd6f6,#8dbdff,#64a1f4,#4b91f1,#3c7dd9
-
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Шаг 3: Деплой файлов на отдельную ветку "output"
       - name: Deploy to Output Branch
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -46,3 +38,4 @@ jobs:
           publish_dir: ./dist
           publish_branch: output
           commit_message: "Update snake animation [skip ci]"
+
