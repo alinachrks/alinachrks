@@ -20,12 +20,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Generate GitHub Contributions Snake Animations
+      - name: Generate GitHub Contributions Snake Animations (Dark & Light)
         uses: Platane/snk@v3
         with:
           github_user_name: alinachrks  # Твой GitHub username
           outputs: |
             dist/github-snake-dark.svg?palette=github-dark&color_snake=#000000&color_dots=#111111,#222222,#333333,#444444,#555555
+            dist/github-snake-light.svg?palette=github-light&color_snake=#ffffff&color_dots=#aaaaaa,#bbbbbb,#cccccc,#dddddd,#eeeeee
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
