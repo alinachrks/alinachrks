@@ -1,4 +1,4 @@
-name: GitHub Snake Game
+name: GitHub Snake Game (Custom)
 
 on:
   schedule:
@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: write  # Разрешение на запись в репозиторий
+  contents: write  # Разрешение на запись
 
 jobs:
   generate:
@@ -20,16 +20,16 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Generate GitHub Contributions Snake Animations (Dark & Light)
-        uses: Platane/snk@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
         with:
-          github_user_name: alinachrks  # Твой GitHub username
-          outputs: |
-            dist/github-snake-dark.svg?palette=github-dark&color_snake=#000000&color_dots=#111111,#222222,#333333,#444444,#555555
-            dist/github-snake-light.svg?palette=github-light&color_snake=#ffffff&color_dots=#aaaaaa,#bbbbbb,#cccccc,#dddddd,#eeeeee
+          python-version: "3.10"
 
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Dependencies
+        run: pip install numpy matplotlib imageio
+
+      - name: Generate Custom Snake Animation
+        run: python generate_snake.py
 
       - name: Deploy to Output Branch
         uses: peaceiris/actions-gh-pages@v3
