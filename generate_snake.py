@@ -5,9 +5,10 @@ import imageio
 
 # Убеждаемся, что папка dist существует и у неё есть права
 output_dir = "dist"
+
 try:
     os.makedirs(output_dir, exist_ok=True)
-    os.chmod(output_dir, 0o777)  # Даём полные права на запись
+    os.chmod(output_dir, 0o777)  # Полный доступ к папке
     print(f"✅ Папка '{output_dir}' успешно создана.")
 except Exception as e:
     print(f"❌ Ошибка при создании '{output_dir}': {e}")
@@ -18,7 +19,7 @@ if not os.path.exists(output_dir):
     print("❌ Папка 'dist/' не была создана! Скрипт остановлен.")
     exit(1)
 
-# Генерация SVG и GIF
+# Параметры змейки
 snake_length = 5
 frames = 30
 size = 10
