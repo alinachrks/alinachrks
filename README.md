@@ -28,14 +28,14 @@ _Over the years, I have gathered a wealth of resources that have been instrument
 
 
 
-### 🐍 GitHub Activity Snake  
+### 🐍 GitHub Snake Game (Custom)
 
-![snake gif](https://github.com/alinachrks/alinachrks/blob/output/github-snake-dark.svg)
+#### 📅 Seasonal Snake
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/alinachrks/alinachrks/blob/output/github-snake.svg">
+  <img alt="GitHub Snake Animation" src="https://github.com/alinachrks/alinachrks/blob/output/github-snake.svg">
+</picture>
 
-
-### 🐍 GitHub Snake Game  
-
-### 🐍 GitHub Snake Game  
-
-![Snake Game GIF](https://alinachrks.github.io/snake-game-profile/snake.gif)
+#### 🎮 Animated GIF Snake
+![GitHub Snake GIF](https://github.com/alinachrks/alinachrks/blob/output/snake.gif)
 
