@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: write  # Разрешение на запись
+  contents: write
 
 jobs:
   generate:
@@ -28,8 +28,11 @@ jobs:
       - name: Install Dependencies
         run: pip install numpy matplotlib imageio
 
-      - name: Generate Custom Snake Animation
+      - name: Run Snake Generator
         run: python generate_snake.py
+
+      - name: Check if dist folder exists
+        run: ls -l dist  # Выведет содержимое папки dist в лог
 
       - name: Deploy to Output Branch
         uses: peaceiris/actions-gh-pages@v3
