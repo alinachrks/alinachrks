@@ -35,4 +35,7 @@ _Over the years, I have gathered a wealth of resources that have been instrument
 
 ### 🐍 GitHub Snake Game  
 
-<iframe src="https://alinachrks.github.io/snake-game-profile/" width="600" height="320" frameborder="0"></iframe>
+### 🐍 GitHub Snake Game  
+
+![Snake Game GIF](https://alinachrks.github.io/snake-game-profile/snake.gif)
+
