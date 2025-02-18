@@ -17,19 +17,30 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: output
-          persist-credentials: false
+          persist-credentials: true  # Нужно, чтобы могли пушить изменения
 
       - name: Update GitHub Stats
         run: |
+          set -x  # Включаем логирование команд
           mkdir -p output
-          curl -o output/stats.svg "https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=alinachrks&theme=react&border_radius=15&exclude_lang=jupyter%20notebook"
-          curl -o output/top-langs.svg "https://github-readme-stats.vercel.app/api/top-langs/?username=alinachrks&langs_count=6&layout=compact&theme=react&border_radius=15&size_weight=0.5&count_weight=0.5&exclude_repo=github-readme-stats&custom_title=Top+Languages&hide=jupyter%20notebook"
-          curl -o output/activity-graph.svg "https://github-readme-activity-graph.vercel.app/graph?username=alinachrks&bg_color=00000000&color=A9C9FF&line=A9C9FF&point=FFFFFF&area=true&hide_border=true"
+          
+          # Скачиваем статистику, прерываем выполнение при ошибке
+          curl -o output/stats.svg "https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=alinachrks&theme=react&border_radius=15&exclude_lang=jupyter%20notebook" || exit 1
+          curl -o output/top-langs.svg "https://github-readme-stats.vercel.app/api/top-langs/?username=alinachrks&langs_count=6&layout=compact&theme=react&border_radius=15&size_weight=0.5&count_weight=0.5&exclude_repo=github-readme-stats&custom_title=Top+Languages&hide=jupyter%20notebook" || exit 1
+          curl -o output/activity-graph.svg "https://github-readme-activity-graph.vercel.app/graph?username=alinachrks&bg_color=00000000&color=A9C9FF&line=A9C9FF&point=FFFFFF&area=true&hide_border=true" || exit 1
 
       - name: Commit and Push Changes
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+
           git add output/stats.svg output/top-langs.svg output/activity-graph.svg
-          git commit -m "🔄 Auto-update GitHub Stats" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/alinachrks/alinachrks.git output
+          git status  # Показываем статус изменений
+          
+          if git diff --cached --quiet; then
+            echo "⚡ No changes to commit"
+            exit 0
+          fi
+          
+          git commit -m "🔄 Auto-update GitHub Stats"
+          git push origin output
