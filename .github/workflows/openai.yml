@@ -30,11 +30,10 @@ jobs:
 
           if [[ -z "$RESPONSE" || "$RESPONSE" == "null" ]]; then
             echo "⚠️ OpenAI API returned an empty response. Skipping update."
-            exit 1
+            exit 0  # Теперь процесс завершится без ошибки
           fi
 
-          echo "### 🧠 AI Weekly Summary" > ai_summary.md
-          echo "$RESPONSE" >> ai_summary.md
+          echo -e "### 🧠 AI Weekly Summary\n\n$RESPONSE" > ai_summary.md
 
       - name: Update README with AI Summary
         run: |
@@ -50,7 +49,7 @@ jobs:
           git add ai_summary.md README.md
           if git diff --cached --quiet; then
             echo "⚡ No changes to commit"
-            exit 0
+            exit 0  # Теперь процесс завершится без ошибки
           fi
           
           git commit -m "📝 Auto-update AI Weekly Summary"
