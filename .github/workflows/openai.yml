@@ -1,0 +1,27 @@
+name: OpenAI Automation
+
+on:
+  schedule:
+    - cron: "0 0 * * 0"  # Запуск каждое воскресенье в 00:00 UTC
+  workflow_dispatch:  # Позволяет запустить вручную
+
+jobs:
+  openai-task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Call OpenAI API
+        run: |
+          RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/completions" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
+            -d '{
+              "model": "gpt-4",
+              "prompt": "Generate a summary of my GitHub contributions for this week.",
+              "temperature": 0.7,
+              "max_tokens": 100
+            }')
+
+          echo "AI RESPONSE: $RESPONSE"
