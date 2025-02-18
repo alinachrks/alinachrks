@@ -104,6 +104,13 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
   <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=github_dark" />
 </p>
 
+
+## 💡 Random Quote
+<p align="center">
+  <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical" />
+</p>
+
+
 ---
 
 <h3 align="center">🔗 Connect with me:</h3>
@@ -121,4 +128,6 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
     <img src="https://counter6.optistats.ovh/private/freecounterstat.php?c=l472hzc2bys9nzjek4m4kray6lkbk8zu" border="0" title="Unique Visitors" alt="Unique Visitors">
   </a>
 </p>
+
+
 
