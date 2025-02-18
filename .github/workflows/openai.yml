@@ -5,6 +5,9 @@ on:
     - cron: "0 0 * * 0"  # Запуск каждое воскресенье в 00:00 UTC
   workflow_dispatch:  # Позволяет запустить вручную
 
+permissions:
+  contents: write
+
 jobs:
   openai-task:
     runs-on: ubuntu-latest
@@ -14,14 +17,41 @@ jobs:
 
       - name: Call OpenAI API
         run: |
+          echo "Calling OpenAI API..."
           RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/completions" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
             -d '{
               "model": "gpt-4",
-              "prompt": "Generate a summary of my GitHub contributions for this week.",
+              "prompt": "Generate a short and informative summary of my GitHub contributions for this week.",
               "temperature": 0.7,
-              "max_tokens": 100
-            }')
+              "max_tokens": 150
+            }' | jq -r '.choices[0].text')
 
-          echo "AI RESPONSE: $RESPONSE"
+          if [[ -z "$RESPONSE" || "$RESPONSE" == "null" ]]; then
+            echo "⚠️ OpenAI API returned an empty response. Skipping update."
+            exit 1
+          fi
+
+          echo "### 🧠 AI Weekly Summary" > ai_summary.md
+          echo "$RESPONSE" >> ai_summary.md
+
+      - name: Update README with AI Summary
+        run: |
+          echo "Updating README.md..."
+          sed -i '/<!-- START_AI_SUMMARY -->/,/<!-- END_AI_SUMMARY -->/c\
+          <!-- START_AI_SUMMARY -->\n'"$(cat ai_summary.md)"'\n<!-- END_AI_SUMMARY -->' README.md
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+          git add ai_summary.md README.md
+          if git diff --cached --quiet; then
+            echo "⚡ No changes to commit"
+            exit 0
+          fi
+          
+          git commit -m "📝 Auto-update AI Weekly Summary"
+          git push
