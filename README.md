@@ -58,26 +58,40 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 ---
 <h2 align="center">📊 GitHub Stats 📊</h2>
 <br>
-<table align="center" style="border: 2px solid #A9C9FF; border-radius: 10px; padding: 15px; box-shadow: 0px 0px 10px rgba(169, 201, 255, 0.5);">
+<table align="center" style="border: 2px solid #A9C9FF; border-radius: 15px; padding: 15px; box-shadow: 0px 0px 15px rgba(169, 201, 255, 0.5);">
   <tr>
-    <td align="center">
-      <img width=400 src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=alinachrks&theme=react&border_radius=15&exclude_lang=jupyter%20notebook" 
-      alt="Repos Per Language" title="Languages used in repositories (excluding Jupyter Notebook)" />
+    <td align="center" style="padding: 10px;">
+      <a href="https://github.com/alinachrks">
+        <img width=400 src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=alinachrks&theme=react&border_radius=15&exclude_lang=jupyter%20notebook" 
+        alt="Repos Per Language" title="Languages used in repositories (excluding Jupyter Notebook)"
+        style="border: 2px solid #A9C9FF; border-radius: 15px; transition: transform 0.3s ease-in-out;"
+        onmouseover="this.style.transform='scale(1.05)';"
+        onmouseout="this.style.transform='scale(1)';"/>
+      </a>
     </td>
-    <td align="center">
-      <img width=400 src="https://github-readme-stats.vercel.app/api/top-langs/?username=alinachrks&langs_count=6&layout=compact&theme=react&border_radius=15&size_weight=0.5&count_weight=0.5&exclude_repo=github-readme-stats&custom_title=Top+Languages&hide=jupyter%20notebook" 
-      alt="Top Languages" title="Most frequently used languages" />
+    <td align="center" style="padding: 10px;">
+      <a href="https://github.com/alinachrks">
+        <img width=400 src="https://github-readme-stats.vercel.app/api/top-langs/?username=alinachrks&langs_count=6&layout=compact&theme=react&border_radius=15&size_weight=0.5&count_weight=0.5&exclude_repo=github-readme-stats&custom_title=Top+Languages&hide=jupyter%20notebook" 
+        alt="Top Languages" title="Most frequently used languages"
+        style="border: 2px solid #A9C9FF; border-radius: 15px; transition: transform 0.3s ease-in-out;"
+        onmouseover="this.style.transform='scale(1.05)';"
+        onmouseout="this.style.transform='scale(1)';"/>
+      </a>
     </td>
   </tr>
   <tr>
-    <td colspan="2" align="center">
+    <td colspan="2" align="center" style="padding: 15px;">
       <a href="https://github.com/alinachrks">
         <img width=900 src="https://github-readme-activity-graph.vercel.app/graph?username=alinachrks&bg_color=00000000&color=A9C9FF&line=A9C9FF&point=FFFFFF&area=true&hide_border=true" 
-        alt="GitHub Activity Graph" title="Your contributions over time" />
+        alt="GitHub Activity Graph" title="Your contributions over time"
+        style="border: 2px solid #A9C9FF; border-radius: 15px; transition: transform 0.3s ease-in-out;"
+        onmouseover="this.style.transform='scale(1.02)';"
+        onmouseout="this.style.transform='scale(1)';"/>
       </a>
     </td>
   </tr>
 </table>
+
 
 ---
 
