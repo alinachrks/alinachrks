@@ -130,4 +130,15 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 </p>
 
 
+## 🧠 AI Weekly Summary
 
+<!-- START_AI_SUMMARY -->
+<!-- AI summary will be inserted here -->
+<!-- END_AI_SUMMARY -->
+
+
+
+
+## ⏳ WakaTime Stats
+
+[![WakaTime Stats](https://github-readme-stats.vercel.app/api/wakatime?username=alinachrks&layout=compact&theme=react&border_radius=10)](https://wakatime.com/@alinachrks)
