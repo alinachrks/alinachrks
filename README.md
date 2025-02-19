@@ -138,7 +138,6 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 
 
 
-
 ## ⏳ WakaTime Stats
 
-[![WakaTime Stats](https://github-readme-stats.vercel.app/api/wakatime?username=alinachrks&layout=compact&theme=react&border_radius=10)](https://wakatime.com/@alinachrks)
+[![WakaTime Stats](https://github-readme-stats.vercel.app/api/wakatime?username=91ca7da2-7b4b-4752-9e6e-0b43cd6047b2&layout=compact&theme=react&border_radius=10)](https://wakatime.com/@91ca7da2-7b4b-4752-9e6e-0b43cd6047b2)
