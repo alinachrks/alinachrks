@@ -56,8 +56,12 @@ jobs:
       - name: ✍️ Update README with AI Summary
         run: |
           echo "📌 Updating README.md..."
-          sed -i '/<!-- START_AI_SUMMARY -->/,/<!-- END_AI_SUMMARY -->/c\
-          <!-- START_AI_SUMMARY -->\n'"$(cat ai_summary.md)"'\n<!-- END_AI_SUMMARY -->' README.md
+          awk '
+            /<!-- START_AI_SUMMARY -->/ {print; while (getline < "ai_summary.md") print; found=1; next}
+            /<!-- END_AI_SUMMARY -->/ {found=0}
+            !found
+          ' README.md > temp.md && mv temp.md README.md
+
 
       - name: 🔄 Commit and Push Changes
         run: |
