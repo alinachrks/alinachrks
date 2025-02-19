@@ -23,6 +23,15 @@ jobs:
             echo "No summary available yet." >> ai_summary.md
           fi
 
+      - name: 🔑 Check OpenAI API Key
+        run: |
+          if [[ -z "${{ secrets.OPENAI_API_KEY }}" ]]; then
+            echo "❌ ERROR: OpenAI API key is missing in GitHub Secrets!"
+            exit 1
+          else
+            echo "✅ OpenAI API key is set."
+          fi
+
       - name: 🚀 Call OpenAI API
         run: |
           echo "🚀 Calling OpenAI API..."
@@ -31,23 +40,22 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
             -d '{
               "model": "gpt-4",
-              "prompt": "Generate a short and informative summary of my GitHub contributions for this week.",
+              "messages": [{"role": "system", "content": "Summarize the GitHub contributions for this week."}],
               "temperature": 0.7,
               "max_tokens": 150
             }')
 
-          # Проверяем HTTP-код из заголовков ответа
-          HTTP_STATUS=$(echo "$RESPONSE" | jq -r '.error.code // empty')
+          echo "📝 API Raw Response: $RESPONSE"
 
-          # Если API вернул ошибку, логируем и пропускаем
-          if [[ -n "$HTTP_STATUS" ]]; then
-            echo "❌ OpenAI API request failed: $HTTP_STATUS"
-            echo "⚠️ OpenAI API response: $RESPONSE"
-            exit 0
+          # Проверяем, есть ли в ответе ошибка
+          ERROR_MESSAGE=$(echo "$RESPONSE" | jq -r '.error.message // empty')
+          if [[ -n "$ERROR_MESSAGE" ]]; then
+            echo "❌ OpenAI API request failed: $ERROR_MESSAGE"
+            exit 1
           fi
 
           # Извлекаем текст ответа
-          SUMMARY=$(echo "$RESPONSE" | jq -r '.choices[0].text')
+          SUMMARY=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // empty')
 
           # Проверяем, что ответ не пустой
           if [[ -z "$SUMMARY" || "$SUMMARY" == "null" ]]; then
@@ -85,3 +93,4 @@ jobs:
           # Предотвращение конфликтов при push
           git pull --rebase
           git push
+
