@@ -133,7 +133,8 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 ## 🧠 AI Weekly Summary
 
 <!-- START_AI_SUMMARY -->
-<!-- AI summary will be inserted here -->
+### 🧠 AI Weekly Summary
+No summary available yet.
 <!-- END_AI_SUMMARY -->
 
 
