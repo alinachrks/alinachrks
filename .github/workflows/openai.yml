@@ -36,30 +36,28 @@ jobs:
           # Получаем коммиты за последние 7 дней
           COMMITS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/$GH_USERNAME/$REPO_NAME/commits?since=$SINCE" \
-            | jq -r '.[] | "\(.commit.author.date): \(.commit.message)"')
+            | jq -r '[.[] | {date: .commit.author.date, message: .commit.message}] | @json')
 
           # Получаем PR за последние 7 дней
           PULL_REQUESTS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/search/issues?q=author:$GH_USERNAME+type:pr+created:>$SINCE" \
-            | jq -r '.items[] | "\(.title) (\(.state))"')
+            | jq -r '[.items[] | {title: .title, state: .state}] | @json')
 
           # Если коммитов нет, записываем "No commits"
-          if [[ -z "$COMMITS" ]]; then
-            COMMITS="No commits this week."
+          if [[ -z "$COMMITS" || "$COMMITS" == "[]" ]]; then
+            COMMITS='[{"date": "N/A", "message": "No commits this week."}]'
           fi
 
           # Если PR нет, записываем "No PRs"
-          if [[ -z "$PULL_REQUESTS" ]]; then
-            PULL_REQUESTS="No pull requests this week."
+          if [[ -z "$PULL_REQUESTS" || "$PULL_REQUESTS" == "[]" ]]; then
+            PULL_REQUESTS='[{"title": "No PRs this week", "state": "N/A"}]'
           fi
 
-          echo "📝 Commits:"
-          echo "$COMMITS"
-          echo "📝 Pull Requests:"
-          echo "$PULL_REQUESTS"
+          echo "📝 Commits JSON: $COMMITS"
+          echo "📝 Pull Requests JSON: $PULL_REQUESTS"
 
-          # Сохраняем данные в файл для OpenAI
-          echo -e "GitHub contributions for the past week:\n\nCommits:\n$COMMITS\n\nPull Requests:\n$PULL_REQUESTS" > github_summary.txt
+          # Сохраняем данные в файл JSON (избегаем проблем с кавычками и переносами строк)
+          echo "{\"commits\": $COMMITS, \"pull_requests\": $PULL_REQUESTS}" > github_summary.json
 
       - name: 🤖 Call OpenAI API
         run: |
@@ -67,15 +65,7 @@ jobs:
           RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/chat/completions" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
-            -d '{
-              "model": "gpt-4",
-              "messages": [
-                {"role": "system", "content": "Summarize the GitHub contributions for this week."},
-                {"role": "user", "content": "'"$(cat github_summary.txt)"'"}
-              ],
-              "temperature": 0.7,
-              "max_tokens": 200
-            }')
+            -d @github_summary.json)
 
           echo "📝 API Raw Response: $RESPONSE"
 
@@ -125,3 +115,4 @@ jobs:
           # Предотвращение конфликтов при push
           git pull --rebase
           git push
+
