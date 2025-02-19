@@ -19,7 +19,6 @@
   </tr>
 </table>
 
----
 
 ## 🛠 Technical Skills
 
@@ -36,7 +35,6 @@
   <a href="https://www.linux.org/" target="_blank"><img src="https://skillicons.dev/icons?i=linux" /></a>
 </p>
 
----
 
 ## 📌 Key Projects
 
@@ -55,7 +53,7 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 
 **Technologies:** Python, Scikit-learn, Pandas, Matplotlib
 
----
+
 <h2 align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=28&pause=1000&color=A9C9FF&width=500&center=true&vCenter=true&lines=%F0%9F%93%88+GitHub+Stats+%F0%9F%93%88" 
   alt="GitHub Stats Animated Title" />
@@ -111,7 +109,7 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 </p>
 
 
----
+
 
 <h3 align="center">🔗 Connect with me:</h3>
 <p align="center">
@@ -119,7 +117,6 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
   <a href="mailto:youremail@example.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white"/></a>
 </p>
 
----
 
 
 
@@ -130,7 +127,6 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 </p>
 
 
-## 🧠 AI Weekly Summary
 
 <!-- START_AI_SUMMARY -->
 ### 🧠 AI Weekly Summary (Updated: 2025-02-19 10:00:24 UTC)
