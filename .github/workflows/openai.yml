@@ -11,14 +11,22 @@ permissions:
 jobs:
   openai-task:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
+      - name: 📥 Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Call OpenAI API
+      - name: 📂 Ensure AI Summary File Exists
         run: |
-          echo "Calling OpenAI API..."
-          RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/completions" \
+          if [ ! -f ai_summary.md ]; then
+            echo "### 🧠 AI Weekly Summary" > ai_summary.md
+            echo "No summary available yet." >> ai_summary.md
+          fi
+
+      - name: 🤖 Call OpenAI API
+        run: |
+          echo "🚀 Calling OpenAI API..."
+          RESPONSE=$(curl -s -o response.json -w "%{http_code}" -X POST "https://api.openai.com/v1/completions" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
             -d '{
@@ -26,22 +34,32 @@ jobs:
               "prompt": "Generate a short and informative summary of my GitHub contributions for this week.",
               "temperature": 0.7,
               "max_tokens": 150
-            }' | jq -r '.choices[0].text')
+            }')
 
-          if [[ -z "$RESPONSE" || "$RESPONSE" == "null" ]]; then
-            echo "⚠️ OpenAI API returned an empty response. Skipping update."
-            exit 0  # Теперь процесс завершится без ошибки
+          HTTP_STATUS=$(tail -n1 response.json)
+          if [ "$HTTP_STATUS" -ne 200 ]; then
+            echo "❌ OpenAI API request failed with status $HTTP_STATUS. Skipping update."
+            exit 0
           fi
 
-          echo -e "### 🧠 AI Weekly Summary\n\n$RESPONSE" > ai_summary.md
+          SUMMARY=$(jq -r '.choices[0].text' response.json)
 
-      - name: Update README with AI Summary
+          if [[ -z "$SUMMARY" || "$SUMMARY" == "null" ]]; then
+            echo "⚠️ OpenAI API returned an empty response. Skipping update."
+            exit 0
+          fi
+
+          TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S UTC")
+          echo -e "### 🧠 AI Weekly Summary (Updated: $TIMESTAMP)\n\n$SUMMARY" > ai_summary.md
+          echo "✅ AI Summary successfully updated!"
+
+      - name: ✍️ Update README with AI Summary
         run: |
-          echo "Updating README.md..."
+          echo "📌 Updating README.md..."
           sed -i '/<!-- START_AI_SUMMARY -->/,/<!-- END_AI_SUMMARY -->/c\
           <!-- START_AI_SUMMARY -->\n'"$(cat ai_summary.md)"'\n<!-- END_AI_SUMMARY -->' README.md
 
-      - name: Commit and Push Changes
+      - name: 🔄 Commit and Push Changes
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
@@ -49,8 +67,11 @@ jobs:
           git add ai_summary.md README.md
           if git diff --cached --quiet; then
             echo "⚡ No changes to commit"
-            exit 0  # Теперь процесс завершится без ошибки
+            exit 0
           fi
-          
+
           git commit -m "📝 Auto-update AI Weekly Summary"
+          
+          # Предотвращение конфликтов при push
+          git pull --rebase
           git push
