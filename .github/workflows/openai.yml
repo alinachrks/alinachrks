@@ -56,8 +56,8 @@ jobs:
           echo "📝 Commits JSON: $COMMITS"
           echo "📝 Pull Requests JSON: $PULL_REQUESTS"
 
-          # Сохраняем данные в файл JSON (избегаем проблем с кавычками и переносами строк)
-          echo "{\"commits\": $COMMITS, \"pull_requests\": $PULL_REQUESTS}" > github_summary.json
+          # Сохраняем данные в файл JSON
+          echo "{\"model\": \"gpt-4\", \"messages\": [{\"role\": \"system\", \"content\": \"Summarize GitHub contributions for this week.\"}, {\"role\": \"user\", \"content\": \"Commits: $COMMITS \n\nPull Requests: $PULL_REQUESTS\"}]}" > github_summary.json
 
       - name: 🤖 Call OpenAI API
         run: |
