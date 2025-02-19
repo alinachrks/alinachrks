@@ -16,21 +16,44 @@ jobs:
       - name: 📥 Checkout Repository
         uses: actions/checkout@v3
 
-      - name: 📂 Ensure AI Summary File Exists
-        run: |
-          if [ ! -f ai_summary.md ]; then
-            echo "### 🧠 AI Weekly Summary" > ai_summary.md
-            echo "No summary available yet." >> ai_summary.md
-          fi
-
       - name: 🔑 Check OpenAI API Key
         run: |
           if [[ -z "${{ secrets.OPENAI_API_KEY }}" ]]; then
             echo "❌ ERROR: OpenAI API key is missing in GitHub Secrets!"
             exit 1
-          else
-            echo "✅ OpenAI API key is set."
           fi
+          if [[ -z "${{ secrets.GITHUB_TOKEN }}" ]]; then
+            echo "❌ ERROR: GitHub Token is missing in GitHub Secrets!"
+            exit 1
+          fi
+          echo "✅ API keys are set."
+
+      - name: 📊 Fetch GitHub Contributions
+        run: |
+          echo "🚀 Fetching GitHub contributions..."
+          GH_USERNAME="alinachrks"
+          REPO_NAME="alinachrks"
+          SINCE=$(date -d "7 days ago" --iso-8601=seconds)
+
+          # Получаем последние коммиты
+          COMMITS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/$GH_USERNAME/$REPO_NAME/commits?since=$SINCE" | jq -r '.[].commit.message')
+
+          # Получаем последние PR
+          PULL_REQUESTS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/search/issues?q=author:$GH_USERNAME+type:pr+created:>$SINCE" | jq -r '.items[].title')
+
+          echo "📌 Recent Commits:"
+          echo "$COMMITS"
+          echo "📌 Recent Pull Requests:"
+          echo "$PULL_REQUESTS"
+
+          # Формируем текст для OpenAI
+          SUMMARY_TEXT="GitHub contributions summary for $GH_USERNAME in the last 7 days:\n\n"
+          SUMMARY_TEXT+="Commits:\n$COMMITS\n\n"
+          SUMMARY_TEXT+="Pull Requests:\n$PULL_REQUESTS"
+
+          echo "$SUMMARY_TEXT" > contributions.txt
 
       - name: 🚀 Call OpenAI API
         run: |
@@ -38,32 +61,34 @@ jobs:
           RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/chat/completions" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
-            -d '{
-              "model": "gpt-4",
-              "messages": [{"role": "system", "content": "Summarize GitHub contributions for this week."}],
-              "temperature": 0.7,
-              "max_tokens": 150
-            }')
+            -d @- <<EOF
+          {
+            "model": "gpt-4",
+            "messages": [
+              {"role": "system", "content": "Summarize the following GitHub contributions:"},
+              {"role": "user", "content": "$(cat contributions.txt)"}
+            ],
+            "temperature": 0.7,
+            "max_tokens": 150
+          }
+          EOF
+          )
 
           echo "📝 API Raw Response: $RESPONSE"
 
-          # Проверяем, есть ли в ответе ошибка
           ERROR_MESSAGE=$(echo "$RESPONSE" | jq -r '.error.message // empty')
           if [[ -n "$ERROR_MESSAGE" ]]; then
             echo "❌ OpenAI API request failed: $ERROR_MESSAGE"
             exit 1
           fi
 
-          # Извлекаем текст ответа
           SUMMARY=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // empty')
 
-          # Проверяем, что ответ не пустой
           if [[ -z "$SUMMARY" || "$SUMMARY" == "null" ]]; then
             echo "⚠️ OpenAI API returned an empty response. Skipping update."
             exit 0
           fi
 
-          # Формируем обновление
           TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S UTC")
           echo -e "### 🧠 AI Weekly Summary (Updated: $TIMESTAMP)\n\n$SUMMARY" > ai_summary.md
           echo "✅ AI Summary successfully updated!"
