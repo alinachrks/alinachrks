@@ -61,11 +61,13 @@ jobs:
           {
             "model": "gpt-4",
             "messages": [
-              {"role": "system", "content": "Summarize GitHub contributions for this week."},
+              {"role": "system", "content": "Summarize the GitHub contributions for this week in a professional style."},
               {"role": "user", "content": "Commits: $COMMITS\n\nPull Requests: $PULL_REQUESTS"}
-            ]
+            ],
+            "temperature": 0.7,
+            "max_tokens": 150
           }
-          EOF
+EOF
 
           cat github_summary.json
 
@@ -75,7 +77,7 @@ jobs:
           RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/chat/completions" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
-            --data @github_summary.json)
+            --data-binary @github_summary.json)
 
           echo "📝 API Raw Response: $RESPONSE"
 
@@ -125,4 +127,5 @@ jobs:
           # Предотвращение конфликтов при push
           git pull --rebase
           git push
+
 
