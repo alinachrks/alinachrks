@@ -38,16 +38,29 @@ jobs:
         run: |
           echo "🎨 Creating SVG badge..."
           SVG_FILE="visitor_badge.svg"
+          VISITORS=$(cat visitor_count.txt)
+
+          # Если просмотров 0, заменяем текст
+          if [ "$VISITORS" -eq 0 ]; then
+            DISPLAY_TEXT="New Profile!"
+          else
+            DISPLAY_TEXT="Views: $VISITORS"
+          fi
 
           cat <<EOF > $SVG_FILE
-          <svg width="200" height="50" xmlns="http://www.w3.org/2000/svg">
-            <linearGradient id="grad" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0%" stop-color="#8A2BE2"/>
-              <stop offset="100%" stop-color="#1E90FF"/>
-            </linearGradient>
-            <rect width="200" height="50" rx="10" ry="10" fill="url(#grad)"/>
+          <svg width="220" height="50" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="grad" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="#8A2BE2"/>
+                <stop offset="100%" stop-color="#1E90FF"/>
+              </linearGradient>
+              <animateTransform attributeName="transform" type="scale" from="1" to="1.05" begin="0s" dur="1s" repeatCount="indefinite"/>
+            </defs>
+            <rect width="220" height="50" rx="10" ry="10" fill="url(#grad)" transform="scale(1)">
+              <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
+            </rect>
             <text x="50%" y="50%" font-size="18" font-family="Arial" fill="white" text-anchor="middle" alignment-baseline="middle">
-              👀 Views: $VISITORS
+              👀 $DISPLAY_TEXT
             </text>
           </svg>
           EOF
