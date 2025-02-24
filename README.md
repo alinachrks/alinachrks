@@ -139,18 +139,17 @@ The GitHub contributions summary for user alinachrks in the last 7 days includes
 
 ## 📊 Codewars Analytics
 
-### 📈 Growth of Honor Points
-![Codewars Graph](https://raw.githubusercontent.com/alinachrks/output/main/codewars_graph.svg)
+### 🎯 Growth of Honor Points
+[![Codewars Graph](https://raw.githubusercontent.com/alinachrks/output/main/codewars_graph.svg)](https://www.codewars.com/users/alinachrks)
 
-### 🥇 Solved Challenges by Rank
-![Codewars Pie Chart](https://raw.githubusercontent.com/alinachrks/output/main/codewars_pie.svg)
+### 🏆 Solved Challenges by Rank
+[![Codewars Pie Chart](https://raw.githubusercontent.com/alinachrks/output/main/codewars_pie.svg)](https://www.codewars.com/users/alinachrks)
 
 ### 🔥 Weekly Activity Heatmap
-![Codewars Heatmap](https://raw.githubusercontent.com/alinachrks/output/main/codewars_heatmap.svg)
+[![Codewars Heatmap](https://raw.githubusercontent.com/alinachrks/output/main/codewars_heatmap.svg)](https://www.codewars.com/users/alinachrks)
 
 ### 📊 Challenges per Language
-![Codewars Bar Chart](https://raw.githubusercontent.com/alinachrks/output/main/codewars_barchart.svg)
-
+[![Codewars Bar Chart](https://raw.githubusercontent.com/alinachrks/output/main/codewars_barchart.svg)](https://www.codewars.com/users/alinachrks)
 
 
 
