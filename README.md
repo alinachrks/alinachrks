@@ -135,10 +135,11 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 
 ## 🏆 Codewars Stats
 <!-- START_CODEWARS_STATS -->
-<p align="center">
-  <img src="https://github.com/alinachrks/alinachrks/raw/main/codewars_badge.svg" width="320px" />
-  <img src="https://www.codewars.com/users/alinachrks/badges/large" width="500px" />
-</p>
+### 🏆 Codewars Stats (Updated: 2025-02-24 13:16:53 UTC)
+
+- **Rank:** 8 kyu
+- **Honor Points:** 3
+- **Completed Challenges:** 1
 <!-- END_CODEWARS_STATS -->
 
 
