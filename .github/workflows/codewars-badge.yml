@@ -1,4 +1,4 @@
-name: Update Codewars Stats
+name: Update Codewars Badge
 
 on:
   schedule:
@@ -32,55 +32,49 @@ jobs:
           RANK=$(echo "$RESPONSE" | jq -r '.ranks.overall.name')
           HONOR=$(echo "$RESPONSE" | jq -r '.honor')
           CHALLENGES=$(echo "$RESPONSE" | jq -r '.codeChallenges.totalCompleted')
+          PROGRESS=10  # Пока фиксированное значение (или можно вычислять)
 
           TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S UTC")
-          echo -e "### 🏆 Codewars Stats (Updated: $TIMESTAMP)\n" > codewars_stats.md
-          echo -e "- **Rank:** $RANK" >> codewars_stats.md
-          echo -e "- **Honor Points:** $HONOR" >> codewars_stats.md
-          echo -e "- **Completed Challenges:** $CHALLENGES" >> codewars_stats.md
-          echo "✅ Codewars stats updated!"
 
-      - name: 🎨 Generate Codewars Badge
-        run: |
+          # Создаем SVG с градиентом и прогресс-баром
           echo "🎨 Creating SVG badge..."
           SVG_FILE="codewars_badge.svg"
 
           cat <<EOF > $SVG_FILE
-          <svg width="250" height="50" xmlns="http://www.w3.org/2000/svg">
+          <svg width="400" height="100" xmlns="http://www.w3.org/2000/svg">
             <linearGradient id="grad" x1="0" x2="1" y1="0" y2="0">
               <stop offset="0%" stop-color="#ff4757"/>
               <stop offset="100%" stop-color="#ff9f43"/>
             </linearGradient>
-            <rect width="250" height="50" rx="10" ry="10" fill="url(#grad)"/>
-            <text x="50%" y="50%" font-size="18" font-family="Arial" fill="white" text-anchor="middle" alignment-baseline="middle">
-              🏆 Codewars: $RANK | $HONOR Points
+            <rect width="400" height="100" rx="15" ry="15" fill="url(#grad)"/>
+            <text x="50%" y="30" font-size="20" font-family="Arial" fill="white" text-anchor="middle" alignment-baseline="middle">
+              🏆 Codewars: $RANK
+            </text>
+            <text x="50%" y="50" font-size="16" font-family="Arial" fill="white" text-anchor="middle" alignment-baseline="middle">
+              🎖 Honor: $HONOR | 🏅 Challenges: $CHALLENGES
+            </text>
+            <rect x="50" y="70" width="300" height="15" rx="7" ry="7" fill="#222"/>
+            <rect x="50" y="70" width="$(($PROGRESS * 3))" height="15" rx="7" ry="7" fill="#ff9f43"/>
+            <text x="50%" y="83" font-size="12" font-family="Arial" fill="white" text-anchor="middle" alignment-baseline="middle">
+              Progress to Next Rank: $PROGRESS%
             </text>
           </svg>
           EOF
 
-      - name: ✍️ Update README with Codewars Stats
-        run: |
-          echo "📌 Updating README.md..."
-          awk '
-            /<!-- START_CODEWARS_STATS -->/ {print; while (getline < "codewars_stats.md") print; found=1; next}
-            /<!-- END_CODEWARS_STATS -->/ {found=0}
-            !found
-          ' README.md > temp.md && mv temp.md README.md
+          echo "✅ Codewars badge updated!"
 
       - name: 🔄 Commit and Push Changes
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-          git add codewars_stats.md codewars_badge.svg README.md
+          git add codewars_badge.svg
           if git diff --cached --quiet; then
             echo "⚡ No changes to commit"
             exit 0
           fi
 
-          git commit -m "🔄 Auto-update Codewars stats"
-
-          # Предотвращение конфликтов при push
-          git pull --rebase origin main || git rebase --abort
+          git commit -m "🔄 Auto-update Codewars badge"
+          git pull --rebase
           git push origin main
 
