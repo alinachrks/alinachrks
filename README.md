@@ -132,7 +132,11 @@ The GitHub contributions summary for user alinachrks in the last 7 days includes
 
 ## 🏆 Codewars Stats
 <!-- START_CODEWARS_STATS -->
-![Codewars Badge](https://github.com/alinachrks/alinachrks/raw/main/codewars_badge.svg)
+### 🏆 Codewars Stats (Updated: 2025-02-24 06:04:41 UTC)
+
+- **Rank:** 8 kyu
+- **Honor Points:** 1
+- **Completed Challenges:** 0
 <!-- END_CODEWARS_STATS -->
 
 
