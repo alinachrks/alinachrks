@@ -1,0 +1,83 @@
+name: Update Codewars Stats
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * *"  # Обновляется каждый день в 00:00 UTC
+  workflow_dispatch:  # Позволяет запускать вручную
+
+permissions:
+  contents: write
+
+jobs:
+  update-codewars:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 📊 Fetch Codewars Stats
+        run: |
+          echo "🔄 Fetching Codewars stats..."
+          CODEWARS_USER="alinachrks"
+          API_URL="https://www.codewars.com/api/v1/users/$CODEWARS_USER"
+          RESPONSE=$(curl -s "$API_URL")
+
+          # Парсим нужные данные
+          RANK=$(echo "$RESPONSE" | jq -r '.ranks.overall.name')
+          HONOR=$(echo "$RESPONSE" | jq -r '.honor')
+          TOTAL_KATA=$(echo "$RESPONSE" | jq -r '.codeChallenges.totalCompleted')
+
+          # Проверяем, что данные не пустые
+          if [[ -z "$RANK" || "$RANK" == "null" ]]; then
+            echo "❌ Failed to fetch Codewars data"
+            exit 1
+          fi
+
+          echo "🏆 Rank: $RANK"
+          echo "🎖 Honor: $HONOR"
+          echo "✅ Total Katas: $TOTAL_KATA"
+
+          # Формируем Markdown-отчет
+          TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S UTC")
+          echo -e "### 🏆 Codewars Stats (Updated: $TIMESTAMP)\n" > codewars_stats.md
+          echo -e "- **Rank:** $RANK" >> codewars_stats.md
+          echo -e "- **Honor:** $HONOR" >> codewars_stats.md
+          echo -e "- **Completed Katas:** $TOTAL_KATA" >> codewars_stats.md
+
+      - name: 🎨 Generate Codewars Badge
+        run: |
+          echo "🎨 Creating Codewars badge..."
+          SVG_FILE="codewars_badge.svg"
+
+          cat <<EOF > $SVG_FILE
+          <svg width="300" height="50" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="grad" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="#B1361E"/>
+                <stop offset="100%" stop-color="#8A2BE2"/>
+              </linearGradient>
+            </defs>
+            <rect width="300" height="50" rx="10" ry="10" fill="url(#grad)"/>
+            <text x="50%" y="50%" font-size="18" font-family="Arial" fill="white" text-anchor="middle" alignment-baseline="middle">
+              🏆 $RANK | 🎖 $HONOR | ✅ $TOTAL_KATA
+            </text>
+          </svg>
+          EOF
+
+      - name: 🔄 Commit and Push Changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+          git add codewars_stats.md codewars_badge.svg
+          if git diff --cached --quiet; then
+            echo "⚡ No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "🔄 Auto-update Codewars stats"
+          git push
