@@ -1,118 +1,86 @@
+import os
+import sys
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import datetime
-import os
+from datetime import datetime
 
 # 🔧 Настройки
-USERNAME = "alinachrks"
+USERNAME = "alinachrks"  # Замените на свой Codewars username
 API_URL = f"https://www.codewars.com/api/v1/users/{USERNAME}"
-OUTPUT_DIR = "./"  # Хранилище файлов (оставить в корне)
+OUTPUT_DIR = "output"
 
-# 🎯 Создаем папку, если ее нет
+# 🔍 Дебаг-лог
+print("✅ Starting Codewars analytics generation...")
+print(f"Python version: {sys.version}")
+print(f"Current working directory: {os.getcwd()}")
+
+# 📂 Создаём папку для сохранения файлов
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-def fetch_codewars_stats():
-    """ Получает статистику Codewars через API """
-    response = requests.get(API_URL)
-    if response.status_code != 200:
-        print(f"⚠️ API request failed! Status: {response.status_code}")
-        return None
+# 📡 Запрос к Codewars API
+response = requests.get(API_URL)
+if response.status_code != 200:
+    print(f"❌ ERROR: Failed to fetch data from Codewars API ({response.status_code})")
+    sys.exit(1)
 
-    data = response.json()
-    stats = {
-        "rank": data["ranks"]["overall"]["name"],
-        "honor": data["honor"],
-        "completed_challenges": data["codeChallenges"]["totalCompleted"],
-        "languages": data["ranks"].get("languages", {})
-    }
-    return stats
+data = response.json()
 
-def save_csv(stats):
-    """ Сохраняет статистику в CSV """
-    csv_file = os.path.join(OUTPUT_DIR, "codewars_progress.csv")
-    timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+# 📊 Извлечение данных
+rank = data.get("ranks", {}).get("overall", {}).get("name", "N/A")
+honor = data.get("honor", 0)
+challenges_completed = data.get("codeChallenges", {}).get("totalCompleted", 0)
+languages = data.get("ranks", {}).get("languages", {})
 
-    df = pd.DataFrame([{
-        "date": timestamp,
-        "rank": stats["rank"],
-        "honor": stats["honor"],
-        "completed_challenges": stats["completed_challenges"]
-    }])
+print(f"🏆 Rank: {rank}, Honor: {honor}, Completed Challenges: {challenges_completed}")
 
-    # Дописываем в файл, если он уже существует
-    if os.path.exists(csv_file):
-        df.to_csv(csv_file, mode='a', header=False, index=False)
-    else:
-        df.to_csv(csv_file, index=False)
+# 📈 Данные для графиков
+history_file = os.path.join(OUTPUT_DIR, "codewars_progress.csv")
+if os.path.exists(history_file):
+    df = pd.read_csv(history_file)
+else:
+    df = pd.DataFrame(columns=["date", "honor", "challenges_completed"])
 
-    print(f"✅ Saved stats to {csv_file}")
+# 🔄 Добавление новых данных
+df = df.append({"date": datetime.utcnow().strftime("%Y-%m-%d"), "honor": honor, "challenges_completed": challenges_completed}, ignore_index=True)
+df.to_csv(history_file, index=False)
 
-def generate_graphs():
-    """ Генерирует графики из CSV """
-    csv_file = os.path.join(OUTPUT_DIR, "codewars_progress.csv")
-    if not os.path.exists(csv_file):
-        print("⚠️ No data to generate graphs!")
-        return
+# 📊 **График роста Honor Points**
+plt.figure(figsize=(8, 5))
+sns.lineplot(data=df, x="date", y="honor", marker="o", color="purple")
+plt.xlabel("Date")
+plt.ylabel("Honor Points")
+plt.title("Growth of Honor Points")
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.savefig(os.path.join(OUTPUT_DIR, "codewars_graph.svg"), format="svg")
+plt.close()
 
-    df = pd.read_csv(csv_file)
-    df["date"] = pd.to_datetime(df["date"])
+# 🥇 **Круговая диаграмма решённых задач по рангам**
+ranks = {lang: info["name"] for lang, info in languages.items()}
+plt.figure(figsize=(6, 6))
+plt.pie([1] * len(ranks), labels=[f"{lang} ({r})" for lang, r in ranks.items()], autopct="%1.1f%%", colors=sns.color_palette("coolwarm", len(ranks)))
+plt.title("Solved Challenges by Rank")
+plt.savefig(os.path.join(OUTPUT_DIR, "codewars_pie.svg"), format="svg")
+plt.close()
 
-    # 📈 График роста Honor Points
-    plt.figure(figsize=(8, 4))
-    sns.lineplot(data=df, x="date", y="honor", marker="o", color="red")
-    plt.title("📈 Growth of Honor Points")
-    plt.xticks(rotation=45)
-    plt.savefig(os.path.join(OUTPUT_DIR, "codewars_graph.svg"), bbox_inches="tight")
-    plt.close()
+# 🔥 **Тепловая карта активности по дням**
+heatmap_data = df.pivot_table(values="challenges_completed", index="date", aggfunc="sum").fillna(0)
+plt.figure(figsize=(8, 4))
+sns.heatmap(heatmap_data, cmap="OrRd", linewidths=0.1, linecolor="gray")
+plt.title("Weekly Activity Heatmap")
+plt.savefig(os.path.join(OUTPUT_DIR, "codewars_heatmap.svg"), format="svg")
+plt.close()
 
-    # 🥇 Pie Chart - Решенные задачи по рангу
-    plt.figure(figsize=(6, 6))
-    sizes = [df["completed_challenges"].iloc[-1], df["honor"].iloc[-1]]
-    labels = ["Completed Challenges", "Honor Points"]
-    colors = ["#ff4757", "#ff9f43"]
-    plt.pie(sizes, labels=labels, autopct="%1.1f%%", colors=colors, startangle=90)
-    plt.title("🥇 Solved Challenges by Rank")
-    plt.savefig(os.path.join(OUTPUT_DIR, "codewars_pie.svg"), bbox_inches="tight")
-    plt.close()
+# 📊 **Гистограмма решённых задач по языкам**
+plt.figure(figsize=(8, 5))
+sns.barplot(x=list(ranks.keys()), y=[1] * len(ranks), palette="viridis")
+plt.xlabel("Languages")
+plt.ylabel("Challenges Solved")
+plt.title("Challenges per Language")
+plt.xticks(rotation=45)
+plt.savefig(os.path.join(OUTPUT_DIR, "codewars_barchart.svg"), format="svg")
+plt.close()
 
-    # 🔥 Heatmap - Активность по неделям
-    df["week"] = df["date"].dt.strftime("%Y-%U")
-    heatmap_data = df.groupby("week").sum()["completed_challenges"].unstack(fill_value=0)
-
-    plt.figure(figsize=(8, 3))
-    sns.heatmap(heatmap_data.T, cmap="coolwarm", linewidths=0.5, annot=True)
-    plt.title("🔥 Weekly Activity Heatmap")
-    plt.savefig(os.path.join(OUTPUT_DIR, "codewars_heatmap.svg"), bbox_inches="tight")
-    plt.close()
-
-    print("✅ Graphs generated successfully!")
-
-def generate_bar_chart(stats):
-    """ Генерирует столбчатую диаграмму по языкам """
-    languages = stats["languages"]
-    if not languages:
-        print("⚠️ No language data found!")
-        return
-
-    lang_names = list(languages.keys())
-    lang_ranks = [int(languages[lang]["rank"]) for lang in lang_names]
-
-    plt.figure(figsize=(8, 4))
-    sns.barplot(x=lang_names, y=lang_ranks, palette="viridis")
-    plt.title("📊 Challenges per Language")
-    plt.xlabel("Language")
-    plt.ylabel("Rank (lower is better)")
-    plt.xticks(rotation=45)
-    plt.savefig(os.path.join(OUTPUT_DIR, "codewars_barchart.svg"), bbox_inches="tight")
-    plt.close()
-
-    print("✅ Bar chart generated!")
-
-if __name__ == "__main__":
-    stats = fetch_codewars_stats()
-    if stats:
-        save_csv(stats)
-        generate_graphs()
-        generate_bar_chart(stats)
+print("✅ All analytics generated and saved successfully!")
