@@ -1,4 +1,8 @@
 import os
+
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
 import matplotlib
 matplotlib.use("Agg")  # Используем без GUI
 
