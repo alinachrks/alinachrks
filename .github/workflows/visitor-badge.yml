@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "0 * * * *"  # Обновляется каждый час
+    - cron: "30 6 * * *"  # Обновляется каждый час
   workflow_dispatch:  # Позволяет запускать вручную
 
 permissions:
