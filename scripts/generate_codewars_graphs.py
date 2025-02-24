@@ -1,8 +1,12 @@
-import os
-import requests
-import pandas as pd
+import matplotlib
+matplotlib.use("Agg")  # Используем без GUI
+
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
+import requests
+import json
+
 
 # Конфигурация API
 USERNAME = "alinachrks"
