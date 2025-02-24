@@ -103,12 +103,6 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 </p>
 
 
-## 💡 Random Quote
-<p align="center">
-  <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical" />
-</p>
-
-
 
 
 <h3 align="center">🔗 Connect with me:</h3>
@@ -117,14 +111,6 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
   <a href="mailto:youremail@example.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white"/></a>
 </p>
 
-
-
-
-<p align="center">
-  <a href="https://www.freecounterstat.com" title="hit counter">
-    <img src="https://counter6.optistats.ovh/private/freecounterstat.php?c=l472hzc2bys9nzjek4m4kray6lkbk8zu" border="0" title="Unique Visitors" alt="Unique Visitors">
-  </a>
-</p>
 
 
 
@@ -139,3 +125,16 @@ The GitHub contributions summary for user alinachrks in the last 7 days includes
 ## ⏳ WakaTime Stats
 
 [![WakaTime Stats](https://github-readme-stats.vercel.app/api/wakatime?username=91ca7da2-7b4b-4752-9e6e-0b43cd6047b2&layout=compact&theme=react&border_radius=10)](https://wakatime.com/@91ca7da2-7b4b-4752-9e6e-0b43cd6047b2)
+
+
+## 🚀 LeetCode Progress
+[![LeetCode Stats](https://leetcard.jacoblin.cool/alinachrks?theme=dark&font=Karma&ext=heatmap)](https://leetcode.com/u/alinachrks/)
+
+## 📈 LeetCode Statistics
+[![LeetCode Stats](https://leetcode-stats.vercel.app/api?username=alinachrks&theme=dark)](https://leetcode.com/u/alinachrks/)
+
+
+
+
+![Profile Views](https://raw.githubusercontent.com/alinachrks/alinachrks/main/visitor_badge.svg)
+
