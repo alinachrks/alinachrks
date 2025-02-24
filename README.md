@@ -36,6 +36,8 @@
 </p>
 
 
+
+
 ## 📌 Key Projects
 
 ### [📊 Geospatial Analytics for Almaty](https://deep-analytics.smartalmaty.kz/)
@@ -52,6 +54,8 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 - **ML-based forecasting models** for outbreak predictions
 
 **Technologies:** Python, Scikit-learn, Pandas, Matplotlib
+
+
 
 
 <h2 align="center">
@@ -97,18 +101,11 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 
 
 ---
+![Visitor Badge](https://github.com/alinachrks/alinachrks/raw/main/visitor_badge.svg)
+
 
 <p align="center">
   <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=github_dark" />
-</p>
-
-
-
-
-<h3 align="center">🔗 Connect with me:</h3>
-<p align="center">
-  <a href="https://www.linkedin.com/in/alinacherkas/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/></a>
-  <a href="mailto:youremail@example.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white"/></a>
 </p>
 
 
@@ -146,9 +143,13 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 
 
 
-
-<p align="right">
-  ![Visitor Badge](https://github.com/alinachrks/alinachrks/raw/main/visitor_badge.svg)
+<h3 align="center">🔗 Connect with me:</h3>
+<p align="center">
+  <a href="https://www.linkedin.com/in/alinacherkas/">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/>
+  </a>
+  <a href="mailto:youremail@example.com">
+    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white"/>
+  </a>
 </p>
-
 
