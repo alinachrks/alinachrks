@@ -1,0 +1,46 @@
+name: Update LeetCode Stats
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # Обновление каждый день
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-leetcode:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Fetch LeetCode Stats
+        run: |
+          curl -s "https://leetcode-stats-api.herokuapp.com/alinachrks" -o leetcode.json
+
+      - name: Update README.md
+        run: |
+          TOTAL_SOLVED=$(jq '.totalSolved' leetcode.json)
+          EASY_SOLVED=$(jq '.easySolved' leetcode.json)
+          MEDIUM_SOLVED=$(jq '.mediumSolved' leetcode.json)
+          HARD_SOLVED=$(jq '.hardSolved' leetcode.json)
+
+          echo "## 🚀 LeetCode Progress" > leetcode.md
+          echo "**Total Solved:** $TOTAL_SOLVED" >> leetcode.md
+          echo "**Easy:** $EASY_SOLVED | **Medium:** $MEDIUM_SOLVED | **Hard:** $HARD_SOLVED" >> leetcode.md
+          echo "**Profile:** [LeetCode](https://leetcode.com/alinachrks)" >> leetcode.md
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+          git add leetcode.md
+          if git diff --cached --quiet; then
+            echo "⚡ No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "🔄 Auto-update LeetCode Stats"
+          git push
