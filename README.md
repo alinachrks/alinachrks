@@ -136,6 +136,8 @@ The GitHub contributions summary for user alinachrks in the last 7 days includes
 ![Codewars Badge](https://github.com/alinachrks/alinachrks/raw/main/codewars_badge.svg)
 <!-- END_CODEWARS_STATS -->
 
+![Codewars Profile](https://www.codewars.com/users/alinachrks/badges/large)
+
 ---
 
 
