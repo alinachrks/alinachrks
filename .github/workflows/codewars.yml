@@ -1,42 +1,90 @@
-name: Update Codewars Analytics
+name: Update Codewars Stats
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # Запуск раз в сутки
-  workflow_dispatch:
-
-permissions:
-  contents: write
+    - cron: "0 0 * * *"  # Запуск раз в день
+  push:
+    branches:
+      - main
 
 jobs:
-  update-codewars:
+  update-readme:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 📥 Checkout Repository (output branch)
-        uses: actions/checkout@v3
-        with:
-          ref: output  # Берем код из ветки output
+      - uses: actions/checkout@v3
+      
+      - name: Install dependencies
+        run: pip install requests matplotlib
 
-      - name: 🔄 Ensure Scripts Directory Exists
-        run: mkdir -p scripts  # Если папки scripts нет — создаем
-
-      - name: 🔄 Install Dependencies
-        run: pip install matplotlib pandas seaborn requests
-
-      - name: 📊 Generate Codewars Analytics
-        run: python scripts/generate_codewars_graphs.py  # Запуск скрипта
-
-      - name: 🔄 Commit and Push Changes
+      - name: Fetch Codewars Data & Update README
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          import requests
+          import json
+          import matplotlib.pyplot as plt
+          import datetime
+          import os
 
-          git add .
-          if git diff --cached --quiet; then
-            echo "⚡ No changes to commit"
-            exit 0
-          fi
+          USERNAME = "alinachrks"
+          URL = f"https://www.codewars.com/api/v1/users/{USERNAME}"
 
-          git commit -m "📊 Auto-update Codewars analytics"
-          git push origin output
+          response = requests.get(URL)
+          if response.status_code != 200:
+              exit("Ошибка при получении данных")
+
+          data = response.json()
+
+          stats = {
+              "date": datetime.datetime.now().strftime("%Y-%m-%d"),
+              "rank": data["ranks"]["overall"]["name"],
+              "honor": data["honor"],
+              "completed": data["codeChallenges"]["totalCompleted"]
+          }
+
+          STATS_FILE = "codewars_stats.json"
+          if os.path.exists(STATS_FILE):
+              with open(STATS_FILE, "r") as f:
+                  history = json.load(f)
+          else:
+              history = []
+
+          history.append(stats)
+
+          with open(STATS_FILE, "w") as f:
+              json.dump(history, f, indent=4)
+
+          dates = [entry["date"] for entry in history]
+          honors = [entry["honor"] for entry in history]
+          completions = [entry["completed"] for entry in history]
+
+          plt.figure(figsize=(10, 5))
+          plt.plot(dates, honors, marker='o', label='Очки чести')
+          plt.plot(dates, completions, marker='s', label='Решённые задачи')
+          plt.xlabel('Дата')
+          plt.ylabel('Количество')
+          plt.title('Прогресс на Codewars')
+          plt.xticks(rotation=45)
+          plt.legend()
+          plt.grid()
+          plt.savefig("codewars_progress.png")
+          plt.close()
+
+          latest = history[-1]
+          readme_content = f"""
+          # Codewars Stats
+          ![Codewars Progress](codewars_progress.png)
+
+          - **Ранг:** {latest['rank']}
+          - **Очки чести:** {latest['honor']}
+          - **Решённые задачи:** {latest['completed']}
+          """
+
+          with open("README.md", "w") as f:
+              f.write(readme_content)
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md codewars_stats.json codewars_progress.png
+          git commit -m "Update Codewars stats" || exit 0
+          git push
