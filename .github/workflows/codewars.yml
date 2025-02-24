@@ -23,14 +23,14 @@ jobs:
           pip install matplotlib pandas seaborn requests
 
       - name: 📊 Generate Codewars Analytics
-        run: python scripts/generate_codewars_graphs.py
+        run: python scripts/generate_codewars_graphs.py  # Обновленный путь к Python-скрипту
 
       - name: 🔄 Commit and Push Changes
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-          git add output/*
+          git add .
           if git diff --cached --quiet; then
             echo "⚡ No changes to commit"
             exit 0
