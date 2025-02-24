@@ -115,10 +115,14 @@ Machine learning model for **predicting COVID-19 spread** in Russia.
 
 
 <!-- START_AI_SUMMARY -->
-### 🧠 AI Weekly Summary (Updated: 2025-02-23 00:47:09 UTC)
-
-The GitHub contributions summary for user alinachrks in the last 7 days includes a number of commits primarily focused on updating the 'openai.yml' and 'README.md' files. They also created a new 'openai.yml' file and updated 'main.yml' file. The user deleted 'generate_snake.py' and '.github/workflows/snake.yml' files. However, no pull requests were made in the past week.
+<div style="border: 2px solid #A9C9FF; border-radius: 10px; padding: 15px; background-color: #f9f9f9; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+  <h3>🧠 AI Weekly Summary (Updated: 2025-02-23 00:47:09 UTC)</h3>
+  <p>
+    The GitHub contributions summary for user alinachrks in the last 7 days includes a number of commits primarily focused on updating the 'openai.yml' and 'README.md' files. They also created a new 'openai.yml' file and updated 'main.yml' file. The user deleted 'generate_snake.py' and '.github/workflows/snake.yml' files. However, no pull requests were made in the past week.
+  </p>
+</div>
 <!-- END_AI_SUMMARY -->
+
 
 
 
@@ -131,17 +135,20 @@ The GitHub contributions summary for user alinachrks in the last 7 days includes
 [![LeetCode Stats](https://leetcard.jacoblin.cool/alinachrks?theme=dark&font=Karma&ext=heatmap)](https://leetcode.com/u/alinachrks/)
 
 
+
 ## 🏆 Codewars Stats
 <!-- START_CODEWARS_STATS -->
-![Codewars Badge](https://github.com/alinachrks/alinachrks/raw/main/codewars_badge.svg)
+<p align="center">
+  <img src="https://github.com/alinachrks/alinachrks/raw/main/codewars_badge.svg" width="320px" />
+  <img src="https://www.codewars.com/users/alinachrks/badges/large" width="500px" />
+</p>
 <!-- END_CODEWARS_STATS -->
 
-![Codewars Profile](https://www.codewars.com/users/alinachrks/badges/large)
-
----
 
 
 
+<p align="right">
+  ![Visitor Badge](https://github.com/alinachrks/alinachrks/raw/main/visitor_badge.svg)
+</p>
 
-![Visitor Badge](https://github.com/alinachrks/alinachrks/raw/main/visitor_badge.svg)
 
