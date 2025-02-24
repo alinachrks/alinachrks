@@ -2,7 +2,7 @@ name: Update Codewars Stats
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # Запуск раз в день
+    - cron: "0 0 * * *"  # Запуск раз в день (UTC)
   push:
     branches:
       - main
@@ -11,13 +11,20 @@ jobs:
   update-readme:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
       - name: Install dependencies
         run: pip install requests matplotlib
 
-      - name: Fetch Codewars Data & Update README
+      - name: Update Codewars Stats and README
         run: |
+          python << 'EOF'
           import requests
           import json
           import matplotlib.pyplot as plt
@@ -29,21 +36,25 @@ jobs:
 
           response = requests.get(URL)
           if response.status_code != 200:
-              exit("Ошибка при получении данных")
+              print("Ошибка при получении данных с Codewars API")
+              exit(1)
 
           data = response.json()
 
           stats = {
               "date": datetime.datetime.now().strftime("%Y-%m-%d"),
-              "rank": data["ranks"]["overall"]["name"],
-              "honor": data["honor"],
-              "completed": data["codeChallenges"]["totalCompleted"]
+              "rank": data.get("ranks", {}).get("overall", {}).get("name", "N/A"),
+              "honor": data.get("honor", 0),
+              "completed": data.get("codeChallenges", {}).get("totalCompleted", 0)
           }
 
           STATS_FILE = "codewars_stats.json"
           if os.path.exists(STATS_FILE):
               with open(STATS_FILE, "r") as f:
-                  history = json.load(f)
+                  try:
+                      history = json.load(f)
+                  except json.JSONDecodeError:
+                      history = []
           else:
               history = []
 
@@ -64,27 +75,29 @@ jobs:
           plt.title('Прогресс на Codewars')
           plt.xticks(rotation=45)
           plt.legend()
-          plt.grid()
+          plt.grid(True)
+          plt.tight_layout()
           plt.savefig("codewars_progress.png")
           plt.close()
 
           latest = history[-1]
-          readme_content = f"""
+          readme_content = f\"\"\"\
           # Codewars Stats
           ![Codewars Progress](codewars_progress.png)
 
           - **Ранг:** {latest['rank']}
           - **Очки чести:** {latest['honor']}
           - **Решённые задачи:** {latest['completed']}
-          """
+          \"\"\"
 
           with open("README.md", "w") as f:
               f.write(readme_content)
+          EOF
 
-      - name: Commit and Push
+      - name: Commit and Push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md codewars_stats.json codewars_progress.png
-          git commit -m "Update Codewars stats" || exit 0
+          git commit -m "Update Codewars stats" || echo "No changes to commit"
           git push
