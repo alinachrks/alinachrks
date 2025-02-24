@@ -2,8 +2,8 @@ name: Update Codewars Analytics
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # Запуск раз в сутки (в 00:00 UTC)
-  workflow_dispatch:  # Позволяет запуск вручную
+    - cron: "0 0 * * *"  # Запуск раз в сутки
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -15,33 +15,30 @@ jobs:
     steps:
       - name: 📥 Checkout Repository
         uses: actions/checkout@v3
-        with:
-          ref: output  # Работаем с веткой output
-          persist-credentials: true  # Позволяет пушить изменения
 
       - name: 🔄 Install Dependencies
         run: |
-          echo "📦 Installing dependencies..."
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install matplotlib pandas seaborn requests
 
       - name: 📊 Generate Codewars Analytics
-        run: |
-          echo "📊 Running Codewars analytics script..."
-          python generate_codewars_graphs.py
+        run: python generate_codewars_graphs.py
 
-      - name: 🛠 Debug: List Generated Files
+      - name: 📂 Ensure Output Directory Exists
         run: |
-          echo "📂 Checking generated files..."
-          ls -lh codewars_*.svg codewars_stats.md || echo "❌ No files found!"
+          mkdir -p output
+          mv codewars_progress.csv output/
+          mv codewars_graph.svg output/
+          mv codewars_pie.svg output/
+          mv codewars_heatmap.svg output/
+          mv codewars_barchart.svg output/
 
-      - name: 🔄 Commit and Push Changes to Output Branch
+      - name: 🔄 Commit and Push Changes
         run: |
-          echo "📝 Preparing to commit changes..."
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-          git add codewars_progress.csv codewars_graph.svg codewars_pie.svg codewars_heatmap.svg codewars_barchart.svg codewars_stats.md
+          git add output/codewars_progress.csv output/codewars_graph.svg output/codewars_pie.svg output/codewars_heatmap.svg output/codewars_barchart.svg
           
           if git diff --cached --quiet; then
             echo "⚡ No changes to commit"
@@ -50,8 +47,7 @@ jobs:
 
           git commit -m "📊 Auto-update Codewars analytics"
           
-          # Обновляем локальный output, чтобы избежать конфликтов
-          git pull --rebase origin output || git rebase --abort
-          
-          # Пушим в output
+          # Избегаем конфликтов при push
+          git pull --rebase || git rebase --abort
           git push origin output
+
