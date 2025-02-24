@@ -136,7 +136,6 @@ The GitHub contributions summary for user alinachrks in the last 7 days includes
 ![Codewars Badge](https://raw.githubusercontent.com/alinachrks/alinachrks/main/codewars_badge.svg)
 
 
-
 ## 📊 Codewars Analytics
 
 ### 🎯 Growth of Honor Points
@@ -151,6 +150,7 @@ The GitHub contributions summary for user alinachrks in the last 7 days includes
 ### 📊 Challenges per Language
 [![Codewars Bar Chart](https://raw.githubusercontent.com/alinachrks/output/main/codewars_barchart.svg)](https://www.codewars.com/users/alinachrks)
 
+_Last updated: `$(date +'%Y-%m-%d')`_
 
 
 
