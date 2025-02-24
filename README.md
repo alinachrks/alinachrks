@@ -130,14 +130,10 @@ The GitHub contributions summary for user alinachrks in the last 7 days includes
 ## 🚀 LeetCode Progress
 [![LeetCode Stats](https://leetcard.jacoblin.cool/alinachrks?theme=dark&font=Karma&ext=heatmap)](https://leetcode.com/u/alinachrks/)
 
-## 🏆 Codewars Stats
-<!-- START_CODEWARS_STATS -->
-### 🏆 Codewars Stats (Updated: 2025-02-24 06:23:24 UTC)
 
-- **Rank:** 8 kyu
-- **Honor Points:** 3
-- **Completed Challenges:** 1
-<!-- END_CODEWARS_STATS -->
+## 🏆 Codewars Stats
+
+![Codewars Badge](https://raw.githubusercontent.com/alinachrks/alinachrks/main/codewars_badge.svg)
 
 
 ![Visitor Badge](https://github.com/alinachrks/alinachrks/raw/main/visitor_badge.svg)
