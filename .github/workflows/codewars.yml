@@ -16,42 +16,12 @@ jobs:
       - name: 📥 Checkout Repository
         uses: actions/checkout@v3
 
-      - name: 🔄 Fetch Codewars Stats
+      - name: 🔄 Install Dependencies
         run: |
-          echo "🔍 Fetching Codewars stats..."
-          CODEWARS_USER="alinachrks"
-          API_URL="https://www.codewars.com/api/v1/users/$CODEWARS_USER"
+          pip install matplotlib pandas seaborn requests
 
-          RESPONSE=$(curl -s "$API_URL")
-          if [[ -z "$RESPONSE" || "$RESPONSE" == "null" ]]; then
-            echo "⚠️ No response from Codewars API. Skipping update."
-            exit 0
-          fi
-
-          # Извлекаем данные
-          HONOR=$(echo "$RESPONSE" | jq -r '.honor')
-          RANK=$(echo "$RESPONSE" | jq -r '.ranks.overall.name')
-          COMPLETED=$(echo "$RESPONSE" | jq -r '.codeChallenges.totalCompleted')
-          LANGUAGES=$(echo "$RESPONSE" | jq -r '.languages // empty')
-
-          # Сохраняем прогресс по очкам
-          TIMESTAMP=$(date +"%Y-%m-%d")
-          echo "$TIMESTAMP,$HONOR" >> codewars_progress.csv
-
-          # Сохраняем статистику
-          echo -e "### 🏆 Codewars Stats (Updated: $TIMESTAMP)\n" > codewars_stats.md
-          echo -e "- **Rank:** $RANK" >> codewars_stats.md
-          echo -e "- **Honor Points:** $HONOR" >> codewars_stats.md
-          echo -e "- **Completed Challenges:** $COMPLETED" >> codewars_stats.md
-          echo -e "- **Languages Trained:** $LANGUAGES" >> codewars_stats.md
-
-          echo "✅ Codewars stats updated!"
-
-      - name: 📊 Generate Graphs
-        uses: python-latest
-        run: |
-          pip install matplotlib pandas seaborn
-          python generate_codewars_graphs.py
+      - name: 📊 Generate Codewars Analytics
+        run: python generate_codewars_graphs.py
 
       - name: 🔄 Commit and Push Changes
         run: |
@@ -67,3 +37,4 @@ jobs:
           git commit -m "📊 Auto-update Codewars analytics"
           git pull --rebase || git rebase --abort
           git push origin main
+
