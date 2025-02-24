@@ -13,17 +13,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout Repository
+      - name: 📥 Checkout Repository (output branch)
         uses: actions/checkout@v3
         with:
-          ref: output  # Работаем в ветке output
+          ref: output  # Берем код из ветки output
+
+      - name: 🔄 Ensure Scripts Directory Exists
+        run: mkdir -p scripts  # Если папки scripts нет — создаем
 
       - name: 🔄 Install Dependencies
-        run: |
-          pip install matplotlib pandas seaborn requests
+        run: pip install matplotlib pandas seaborn requests
 
       - name: 📊 Generate Codewars Analytics
-        run: python scripts/generate_codewars_graphs.py  # Обновленный путь к Python-скрипту
+        run: python scripts/generate_codewars_graphs.py  # Запуск скрипта
 
       - name: 🔄 Commit and Push Changes
         run: |
